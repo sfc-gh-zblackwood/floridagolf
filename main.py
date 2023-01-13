@@ -4,8 +4,7 @@ import plotly_express as px
 import streamlit as st
 import time
 from PIL import Image
-import matplotlib.pyplot as plt
-from soccerplots.radar_chart import Radar
+
 
 image = Image.open('florida.png')
 imgtab = Image.open('gatorlogo.png')
