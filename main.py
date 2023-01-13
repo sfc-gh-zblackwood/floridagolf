@@ -10,7 +10,7 @@ from soccerplots.radar_chart import Radar
 image = Image.open('florida.png')
 imgtab = Image.open('gatorlogo.png')
 
-st.set_page_config(page_title='Florida Baskteball',page_icon=imgtab,layout='wide')
+st.set_page_config(page_title='Florida Golf',page_icon=imgtab,layout='wide')
 
 st.sidebar.image(image)
 
@@ -24,7 +24,7 @@ if st.sidebar.checkbox('Log in'):
     time.sleep(1)
     container.empty()
     
-    df=pd.read_csv('forcedecks-test-export-01_12_2023.csv', parse_dates=["Date"])
+    df=pd.read_csv('forcedecks-test-export-01_13_2023.csv', parse_dates=["Date"])
 
     #remove columns and change date
     df_updated=df.drop(['ExternalId','Test Type','Time','BW [KG]','Reps','Tags','Additional Load [lb]'], axis=1)
