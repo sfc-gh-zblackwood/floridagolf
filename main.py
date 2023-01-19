@@ -46,7 +46,7 @@ if st.sidebar.checkbox('Log in'):
     date_start = st.sidebar.selectbox(
         "Date From:",
         options=df_updated["Date"].unique(),
-        index=4
+        index=3
     )
 
     date_end = st.sidebar.selectbox(
