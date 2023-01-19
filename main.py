@@ -4,12 +4,15 @@ import plotly_express as px
 import streamlit as st
 import time
 from PIL import Image
+import matplotlib.pyplot as plt
+import numpy as np 
+
 
 
 image = Image.open('florida.png')
 imgtab = Image.open('gatorlogo.png')
 
-st.set_page_config(page_title='Florida Golf',page_icon=imgtab,layout='wide')
+st.set_page_config(page_title='Florida Baskteball',page_icon=imgtab,layout='wide')
 
 st.sidebar.image(image)
 
@@ -23,7 +26,7 @@ if st.sidebar.checkbox('Log in'):
     time.sleep(1)
     container.empty()
     
-    df=pd.read_csv('forcedecks-test-export-01_13_2023.csv', parse_dates=["Date"])
+    df=pd.read_csv('forcedecks-test-export-01_19_2023.csv', parse_dates=["Date"])
 
     #remove columns and change date
     df_updated=df.drop(['ExternalId','Test Type','Time','BW [KG]','Reps','Tags','Additional Load [lb]'], axis=1)
@@ -44,7 +47,7 @@ if st.sidebar.checkbox('Log in'):
     date_start = st.sidebar.selectbox(
         "Date From:",
         options=df_updated["Date"].unique(),
-        index=3
+        index=26
     )
 
     date_end = st.sidebar.selectbox(
@@ -159,123 +162,134 @@ if st.sidebar.checkbox('Log in'):
 
     #ecc duration graph
     ecc_duration_by_name = df_selection.groupby(by=["Date"]).mean()[["Eccentric Duration [ms] "]]
-    fig_ecc_duration = px.bar(
+    fig_ecc_duration = px.line(
         ecc_duration_by_name,
         x=ecc_duration_by_name.index,
         y="Eccentric Duration [ms] ",
         title="<b>Eccentric Duration</b>",
         color_discrete_sequence=["#3679ff"] * len(ecc_duration_by_name),
         template="plotly_white",
+        markers=True
     )
     fig_ecc_duration.update_layout(
         xaxis=dict(tickmode="linear"),
         plot_bgcolor="rgba(0,0,0,0)",
-        yaxis=(dict(showgrid=False)),
+        yaxis=(dict(showgrid=True)),
     )
+    fig_ecc_duration.update_traces(marker_size=11)
     fig_ecc_duration.update_xaxes(rangebreaks=[dict(values=missingDates)])  #remove empty dates
-
+    
     #ecc peak vel graph
     ecc_peak_vel_by_name = df_selection.groupby(by=["Date"]).mean()[["Eccentric Peak Velocity [m/s] "]]
-    fig_ecc_peak_vel = px.bar(
+    fig_ecc_peak_vel = px.line(
         ecc_peak_vel_by_name,
         ecc_peak_vel_by_name.index,
         y="Eccentric Peak Velocity [m/s] ",
         title="<b>Eccentric Peak Velocity</b>",
         color_discrete_sequence=["#3679ff"] * len(ecc_peak_vel_by_name),
         template="plotly_white",
+        markers=True
     )
+
     fig_ecc_peak_vel.update_layout(
         xaxis=dict(tickmode="linear"),
         plot_bgcolor="rgba(0,0,0,0)",
         yaxis=(dict(showgrid=False)),
     )
+    fig_ecc_peak_vel.update_traces(marker_size=11)
     fig_ecc_peak_vel.update_xaxes(rangebreaks=[dict(values=missingDates)]) #remove empty dates
 
     #cmj depth graph
     cmj_depth_by_name = df_selection.groupby(by=["Date"]).mean()[["Countermovement Depth [cm] "]]
-    fig_cmj_depth = px.bar(
+    fig_cmj_depth = px.line(
         cmj_depth_by_name,
         cmj_depth_by_name.index,
         y="Countermovement Depth [cm] ",
         title="<b>CMJ Depth</b>",
         color_discrete_sequence=["#3679ff"] * len(cmj_depth_by_name),
         template="plotly_white",
+        markers=True
     )
     fig_cmj_depth.update_layout(
         xaxis=dict(tickmode="linear"),
         plot_bgcolor="rgba(0,0,0,0)",
         yaxis=(dict(showgrid=False)),
     )
+    fig_cmj_depth.update_traces(marker_size=11)
     fig_cmj_depth.update_xaxes(rangebreaks=[dict(values=missingDates)])  #remove empty dates
   
 
     ecc_decl_rfd_name = df_selection.groupby(by=["Date"]).mean()[["Eccentric Deceleration RFD [N/s] "]]
-    fig_ecc_decl_rfd = px.bar(
+    fig_ecc_decl_rfd = px.line(
         ecc_decl_rfd_name,
         ecc_decl_rfd_name.index,
         y="Eccentric Deceleration RFD [N/s] ",
         title="<b>Eccentric Deceleration RFD</b>",
         color_discrete_sequence=["#3679ff"] * len(ecc_decl_rfd_name),
         template="plotly_white",
+        markers=True
     )
     fig_ecc_decl_rfd.update_layout(
         xaxis=dict(tickmode="linear"),
         plot_bgcolor="rgba(0,0,0,0)",
         yaxis=(dict(showgrid=False)),
     )
-    #remove empty dates
-    fig_ecc_decl_rfd.update_xaxes(rangebreaks=[dict(values=missingDates)])
+    fig_ecc_decl_rfd.update_traces(marker_size=11)
+    fig_ecc_decl_rfd.update_xaxes(rangebreaks=[dict(values=missingDates)])  #remove empty dates
 
     ecc_decl_imp_name = df_selection.groupby(by=["Date"]).mean()[["Eccentric Deceleration Impulse [N s] "]]
-    fig_ecc_decl_imp = px.bar(
+    fig_ecc_decl_imp = px.line(
         ecc_decl_imp_name,
         ecc_decl_imp_name.index,
         y="Eccentric Deceleration Impulse [N s] ",
         title="<b>Eccentric Decl Impulse</b>",
         color_discrete_sequence=["#3679ff"] * len(ecc_decl_imp_name),
-        template="plotly_white"
+        template="plotly_white",
+        markers=True
     )
     fig_ecc_decl_imp.update_layout(
         xaxis=dict(tickmode="linear"),
         plot_bgcolor="rgba(0,0,0,0)",
         yaxis=(dict(showgrid=False)),
     )
-    #remove empty dates
-    fig_ecc_decl_imp.update_xaxes(rangebreaks=[dict(values=missingDates)])
+    fig_ecc_decl_imp.update_traces(marker_size=11)
+    fig_ecc_decl_imp.update_xaxes(rangebreaks=[dict(values=missingDates)]) #remove empty dates
 
     ecc_peak_force_name = df_selection.groupby(by=["Date"]).mean()[["Eccentric Peak Force [N] "]]
-    fig_ecc_peak_force = px.bar(
+    fig_ecc_peak_force = px.line(
         ecc_peak_force_name,
         ecc_peak_force_name.index,
         y="Eccentric Peak Force [N] ",
         title="<b>Eccetnric Peak Force</b>",
         color_discrete_sequence=["#3679ff"] * len(ecc_peak_force_name),
         template="plotly_white",
+        markers=True
     )
     fig_ecc_peak_force.update_layout(
         xaxis=dict(tickmode="linear"),
         plot_bgcolor="rgba(0,0,0,0)",
         yaxis=(dict(showgrid=False)),
     )
-    #remove empty dates
-    fig_ecc_peak_force.update_xaxes(rangebreaks=[dict(values=missingDates)])
+    fig_ecc_peak_force.update_traces(marker_size=11)
+    fig_ecc_peak_force.update_xaxes(rangebreaks=[dict(values=missingDates)])  #remove empty dates
 
     braking_duration_name = df_selection.groupby(by=["Date"]).mean()[["Braking Phase Duration [s] "]]
-    fig_braking_duration = px.bar(
+    fig_braking_duration = px.line(
         braking_duration_name,
         braking_duration_name.index,
         y="Braking Phase Duration [s] ",
         title="<b>Braking Phase Duration</b>",
         color_discrete_sequence=["#3679ff"] * len(braking_duration_name),
-        template="plotly_white"
+        template="plotly_white",
+        markers=True
     )
     fig_braking_duration.update_layout(
         xaxis=dict(tickmode="linear"),
         plot_bgcolor="rgba(0,0,0,0)",
         yaxis=(dict(showgrid=False)),
     )
-    #remove empty dates
-    fig_braking_duration.update_xaxes(rangebreaks=[dict(values=missingDates)])
+    fig_braking_duration.update_traces(marker_size=11)
+    fig_braking_duration.update_xaxes(rangebreaks=[dict(values=missingDates)]) #remove empty dates
     
 
 
@@ -347,83 +361,93 @@ if st.sidebar.checkbox('Log in'):
     #Graphs Performance KPI's
 
     jump_height_by_name = df_selection.groupby(by=["Date"]).mean()[["Jump Height (Flight Time) in Inches [in] "]]
-    fig_jump_height = px.bar(
+    fig_jump_height = px.line(
         jump_height_by_name,
         x=jump_height_by_name.index,
         y="Jump Height (Flight Time) in Inches [in] ",
         title="<b>Jump Height</b>",
         color_discrete_sequence=["#3679ff"] * len(jump_height_by_name),
         template="plotly_white",
+        markers=True
     )
     fig_jump_height.update_layout(
         xaxis=dict(tickmode="linear"),
         plot_bgcolor="rgba(0,0,0,0)",
         yaxis=(dict(showgrid=False)),
     )
+    fig_jump_height.update_traces(marker_size=11)
     fig_jump_height.update_xaxes(rangebreaks=[dict(values=missingDates)]) #remove empty dates
 
     peak_power_by_name = df_selection.groupby(by=["Date"]).mean()[["Peak Power / BM [W/kg] "]]
-    fig_peak_power = px.bar(
+    fig_peak_power = px.line(
         peak_power_by_name,
         x=peak_power_by_name.index,
         y="Peak Power / BM [W/kg] ",
         title="<b>Peak Power / BM</b>",
         color_discrete_sequence=["#3679ff"] * len(peak_power_by_name),
         template="plotly_white",
+        markers=True
     )
     fig_peak_power.update_layout(
         xaxis=dict(tickmode="linear"),
         plot_bgcolor="rgba(0,0,0,0)",
         yaxis=(dict(showgrid=False)),
     )
+    fig_peak_power.update_traces(marker_size=11)
     fig_peak_power.update_xaxes(rangebreaks=[dict(values=missingDates)]) #remove empty dates
 
     RSI_mod_by_name = df_selection.groupby(by=["Date"]).mean()[["RSI-modified [m/s] "]]
-    fig_RSI_mod = px.bar(
+    fig_RSI_mod = px.line(
         RSI_mod_by_name,
         x=RSI_mod_by_name.index,
         y="RSI-modified [m/s] ",
         title="<b>RSI-modified</b>",
         color_discrete_sequence=["#3679ff"] * len(RSI_mod_by_name),
         template="plotly_white",
+        markers=True
     )
     fig_RSI_mod.update_layout(
         xaxis=dict(tickmode="linear"),
         plot_bgcolor="rgba(0,0,0,0)",
         yaxis=(dict(showgrid=False)),
     )
+    fig_RSI_mod.update_traces(marker_size=11)
     fig_RSI_mod.update_xaxes(rangebreaks=[dict(values=missingDates)]) #remove empty dates
 
     conc_impulse_by_name = df_selection.groupby(by=["Date"]).mean()[["Concentric Impulse [N s] "]]
-    fig_conc_impulse = px.bar(
+    fig_conc_impulse = px.line(
         conc_impulse_by_name,
         x=conc_impulse_by_name.index,
         y="Concentric Impulse [N s] ",
         title="<b>Concentric Impulse</b>",
         color_discrete_sequence=["#3679ff"] * len(conc_impulse_by_name),
         template="plotly_white",
+        markers=True
     )
     fig_conc_impulse.update_layout(
         xaxis=dict(tickmode="linear"),
         plot_bgcolor="rgba(0,0,0,0)",
         yaxis=(dict(showgrid=False)),
     )
+    fig_conc_impulse.update_traces(marker_size=11)
     fig_conc_impulse.update_xaxes(rangebreaks=[dict(values=missingDates)]) #remove empty dates
 
     ecc_impulse_by_name = df_selection.groupby(by=["Date"]).mean()[["Eccentric Braking Impulse [N s] "]]
-    fig_ecc_impulse = px.bar(
+    fig_ecc_impulse = px.line(
         ecc_impulse_by_name,
         x=ecc_impulse_by_name.index,
         y="Eccentric Braking Impulse [N s] ",
         title="<b>Eccentric Braking Impulse</b>",
         color_discrete_sequence=["#3679ff"] * len(ecc_impulse_by_name),
         template="plotly_white",
+        markers=True
     )
     fig_ecc_impulse.update_layout(
         xaxis=dict(tickmode="linear"),
         plot_bgcolor="rgba(0,0,0,0)",
         yaxis=(dict(showgrid=False)),
     )
+    fig_ecc_impulse.update_traces(marker_size=11)
     fig_ecc_impulse.update_xaxes(rangebreaks=[dict(values=missingDates)]) #remove empty dates
 
 
@@ -607,12 +631,12 @@ if st.sidebar.checkbox('Log in'):
         y_axis_val = col2.selectbox('Select the Y-axis', options=df_nonameordate.columns)
         
 
-        plot = px.bar(df_selection, x=x_axis_val, y=y_axis_val, color=x_axis_val, title=y_axis_val, template="plotly_dark")
+        plot = px.scatter(df_selection, x=x_axis_val, y=y_axis_val, color=x_axis_val, title=y_axis_val, text=y_axis_val)
         plot.update_layout(
         xaxis=dict(tickmode="linear"),
-        yaxis=(dict(showgrid=False)),
         )
         plot.update_xaxes(rangebreaks=[dict(values=missingDates)]) #remove empty dates
+        plot.update_traces(marker_size=11, textposition='top center')
         st.plotly_chart(plot, use_container_width=True)
         
         st.caption('Newest at the bottom, oldest at the top')
@@ -631,7 +655,7 @@ if st.sidebar.checkbox('Log in'):
           select2 = st.selectbox('Select the Y-axis', options=sb_options)
         
         #scatter plot
-        plot3 = px.scatter(df_selection, x=select1, y=select2, template="plotly_dark", title= select2 + ' VS ' + select1, text='Date', color='Date')
+        plot3 = px.scatter(df_selection, x=select1, y=select2, title= select2 + ' VS ' + select1, text='Date', color='Date')
         plot3.update_traces(marker_size=11, textposition='top center')
 
         st.plotly_chart(plot3, use_container_width=True)
@@ -677,11 +701,12 @@ if st.sidebar.checkbox('Log in'):
         elif get_list == "EccentricDeclRFD":
           select_options = EccentricDeclRFD
 
-        plot_assym = px.bar(df_selection, x=select_options, y=dateorname, color=dateorname,
+        plot_assym = px.bar(df_selection, x=select_options, y=dateorname, text=select_options, color=dateorname,
                             labels={
                             "X": "Asymmetry",
                             },template="plotly_dark")
         plot_assym.update_yaxes(rangebreaks=[dict(values=missingDates)]) #remove empty dates
+        
         st.plotly_chart(plot_assym, use_container_width=True)
 
        
