@@ -4,8 +4,7 @@ import plotly_express as px
 import streamlit as st
 import time
 from PIL import Image
-import matplotlib.pyplot as plt
-import numpy as np 
+
 
 
 
