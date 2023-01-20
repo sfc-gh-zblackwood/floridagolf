@@ -11,7 +11,7 @@ from PIL import Image
 image = Image.open('florida.png')
 imgtab = Image.open('gatorlogo.png')
 
-st.set_page_config(page_title='Florida Baskteball',page_icon=imgtab,layout='wide')
+st.set_page_config(page_title='Florida Golf',page_icon=imgtab,layout='wide')
 
 st.sidebar.image(image)
 
