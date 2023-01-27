@@ -7,7 +7,6 @@ from PIL import Image
 
 
 
-
 image = Image.open('florida.png')
 imgtab = Image.open('gatorlogo.png')
 
@@ -25,7 +24,7 @@ if st.sidebar.checkbox('Log in'):
     time.sleep(1)
     container.empty()
     
-    df=pd.read_csv('forcedecks-test-export-01_19_2023.csv', parse_dates=["Date"])
+    df=pd.read_csv('forcedecks-test-export-01_12_2023.csv', parse_dates=["Date"])
 
     #remove columns and change date
     df_updated=df.drop(['ExternalId','Test Type','Time','BW [KG]','Reps','Tags','Additional Load [lb]'], axis=1)
@@ -46,7 +45,7 @@ if st.sidebar.checkbox('Log in'):
     date_start = st.sidebar.selectbox(
         "Date From:",
         options=df_updated["Date"].unique(),
-        index=3
+        index=26
     )
 
     date_end = st.sidebar.selectbox(
@@ -170,11 +169,18 @@ if st.sidebar.checkbox('Log in'):
         template="plotly_white",
         markers=True
     )
+    #adding Average line
+    fig_ecc_duration.add_hline(y=eccentric_duration,line_dash="dash", line_color="black", annotation_text="Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="black")
+
     fig_ecc_duration.update_layout(
         xaxis=dict(tickmode="linear"),
         plot_bgcolor="rgba(0,0,0,0)",
         yaxis=(dict(showgrid=True)),
     )
+  
     fig_ecc_duration.update_traces(marker_size=11)
     fig_ecc_duration.update_xaxes(rangebreaks=[dict(values=missingDates)])  #remove empty dates
     
@@ -189,6 +195,11 @@ if st.sidebar.checkbox('Log in'):
         template="plotly_white",
         markers=True
     )
+    #adding Average line
+    fig_ecc_peak_vel.add_hline(y=ecc_peak_velocity,line_dash="dash", line_color="black", annotation_text="Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="black")
 
     fig_ecc_peak_vel.update_layout(
         xaxis=dict(tickmode="linear"),
@@ -209,6 +220,12 @@ if st.sidebar.checkbox('Log in'):
         template="plotly_white",
         markers=True
     )
+    #adding Average line
+    fig_cmj_depth.add_hline(y=cmj_depth,line_dash="dash", line_color="black", annotation_text="Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="black")
+
     fig_cmj_depth.update_layout(
         xaxis=dict(tickmode="linear"),
         plot_bgcolor="rgba(0,0,0,0)",
@@ -217,7 +234,7 @@ if st.sidebar.checkbox('Log in'):
     fig_cmj_depth.update_traces(marker_size=11)
     fig_cmj_depth.update_xaxes(rangebreaks=[dict(values=missingDates)])  #remove empty dates
   
-
+    #Eccentric Decl RFD graph
     ecc_decl_rfd_name = df_selection.groupby(by=["Date"]).mean()[["Eccentric Deceleration RFD [N/s] "]]
     fig_ecc_decl_rfd = px.line(
         ecc_decl_rfd_name,
@@ -228,6 +245,12 @@ if st.sidebar.checkbox('Log in'):
         template="plotly_white",
         markers=True
     )
+    #adding Average line
+    fig_ecc_decl_rfd.add_hline(y=ecc_decl_rfd,line_dash="dash", line_color="black", annotation_text="Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="black")
+
     fig_ecc_decl_rfd.update_layout(
         xaxis=dict(tickmode="linear"),
         plot_bgcolor="rgba(0,0,0,0)",
@@ -236,6 +259,7 @@ if st.sidebar.checkbox('Log in'):
     fig_ecc_decl_rfd.update_traces(marker_size=11)
     fig_ecc_decl_rfd.update_xaxes(rangebreaks=[dict(values=missingDates)])  #remove empty dates
 
+    #Ecc Decl Impulse graph
     ecc_decl_imp_name = df_selection.groupby(by=["Date"]).mean()[["Eccentric Deceleration Impulse [N s] "]]
     fig_ecc_decl_imp = px.line(
         ecc_decl_imp_name,
@@ -246,6 +270,12 @@ if st.sidebar.checkbox('Log in'):
         template="plotly_white",
         markers=True
     )
+    #adding Average line
+    fig_ecc_decl_imp.add_hline(y=ecc_decl_imp,line_dash="dash", line_color="black", annotation_text="Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="black")
+
     fig_ecc_decl_imp.update_layout(
         xaxis=dict(tickmode="linear"),
         plot_bgcolor="rgba(0,0,0,0)",
@@ -254,6 +284,7 @@ if st.sidebar.checkbox('Log in'):
     fig_ecc_decl_imp.update_traces(marker_size=11)
     fig_ecc_decl_imp.update_xaxes(rangebreaks=[dict(values=missingDates)]) #remove empty dates
 
+    #Ecc peak force graph graph
     ecc_peak_force_name = df_selection.groupby(by=["Date"]).mean()[["Eccentric Peak Force [N] "]]
     fig_ecc_peak_force = px.line(
         ecc_peak_force_name,
@@ -264,6 +295,12 @@ if st.sidebar.checkbox('Log in'):
         template="plotly_white",
         markers=True
     )
+    #adding Average line
+    fig_ecc_peak_force.add_hline(y=ecc_peak_force,line_dash="dash", line_color="black", annotation_text="Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="black")
+
     fig_ecc_peak_force.update_layout(
         xaxis=dict(tickmode="linear"),
         plot_bgcolor="rgba(0,0,0,0)",
@@ -272,6 +309,7 @@ if st.sidebar.checkbox('Log in'):
     fig_ecc_peak_force.update_traces(marker_size=11)
     fig_ecc_peak_force.update_xaxes(rangebreaks=[dict(values=missingDates)])  #remove empty dates
 
+    #Braking Duration graph
     braking_duration_name = df_selection.groupby(by=["Date"]).mean()[["Braking Phase Duration [s] "]]
     fig_braking_duration = px.line(
         braking_duration_name,
@@ -282,6 +320,12 @@ if st.sidebar.checkbox('Log in'):
         template="plotly_white",
         markers=True
     )
+    #adding Average line
+    fig_braking_duration.add_hline(y=braking_duration,line_dash="dash", line_color="black", annotation_text="Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="black")
+
     fig_braking_duration.update_layout(
         xaxis=dict(tickmode="linear"),
         plot_bgcolor="rgba(0,0,0,0)",
@@ -359,6 +403,7 @@ if st.sidebar.checkbox('Log in'):
 
     #Graphs Performance KPI's
 
+
     jump_height_by_name = df_selection.groupby(by=["Date"]).mean()[["Jump Height (Flight Time) in Inches [in] "]]
     fig_jump_height = px.line(
         jump_height_by_name,
@@ -369,6 +414,12 @@ if st.sidebar.checkbox('Log in'):
         template="plotly_white",
         markers=True
     )
+    #adding Average line
+    fig_jump_height.add_hline(y=jump_height,line_dash="dash", line_color="black", annotation_text="Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="black")
+
     fig_jump_height.update_layout(
         xaxis=dict(tickmode="linear"),
         plot_bgcolor="rgba(0,0,0,0)",
@@ -387,6 +438,12 @@ if st.sidebar.checkbox('Log in'):
         template="plotly_white",
         markers=True
     )
+    #adding Average line
+    fig_peak_power.add_hline(y=peak_power,line_dash="dash", line_color="black", annotation_text="Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="black")
+    
     fig_peak_power.update_layout(
         xaxis=dict(tickmode="linear"),
         plot_bgcolor="rgba(0,0,0,0)",
@@ -405,6 +462,12 @@ if st.sidebar.checkbox('Log in'):
         template="plotly_white",
         markers=True
     )
+    #adding Average line
+    fig_RSI_mod.add_hline(y=RSI_mod,line_dash="dash", line_color="black", annotation_text="Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="black")
+
     fig_RSI_mod.update_layout(
         xaxis=dict(tickmode="linear"),
         plot_bgcolor="rgba(0,0,0,0)",
@@ -423,6 +486,12 @@ if st.sidebar.checkbox('Log in'):
         template="plotly_white",
         markers=True
     )
+    #adding Average line
+    fig_conc_impulse.add_hline(y=conc_impulse,line_dash="dash", line_color="black", annotation_text="Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="black")
+
     fig_conc_impulse.update_layout(
         xaxis=dict(tickmode="linear"),
         plot_bgcolor="rgba(0,0,0,0)",
@@ -441,6 +510,12 @@ if st.sidebar.checkbox('Log in'):
         template="plotly_white",
         markers=True
     )
+    #adding Average line
+    fig_ecc_impulse.add_hline(y=ecc_impulse,line_dash="dash", line_color="black", annotation_text="Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="black")
+
     fig_ecc_impulse.update_layout(
         xaxis=dict(tickmode="linear"),
         plot_bgcolor="rgba(0,0,0,0)",
