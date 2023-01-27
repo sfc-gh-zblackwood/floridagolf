@@ -24,7 +24,7 @@ if st.sidebar.checkbox('Log in'):
     time.sleep(1)
     container.empty()
     
-    df=pd.read_csv('forcedecks-test-export-01_27_2023.csv', parse_dates=["Date"])
+    df=pd.read_csv('forcedecks-test-export-01_13_2023.csv', parse_dates=["Date"])
 
     #remove columns and change date
     df_updated=df.drop(['ExternalId','Test Type','Time','BW [KG]','Reps','Tags','Additional Load [lb]'], axis=1)
@@ -60,6 +60,9 @@ if st.sidebar.checkbox('Log in'):
         "Date >= @date_start and Date <= @date_end & Name ==@name "
     )
 
+    df_selection1= df_updated.query(
+        "Date >= @date_start and Date <= @date_end"
+    )
     #Date
 
     
@@ -67,15 +70,19 @@ if st.sidebar.checkbox('Log in'):
 
     # TOP KPI's Readiness
     eccentric_duration = int(df_selection["Eccentric Duration [ms] "].mean())
+    eccentric_duration_team_avg = int(df_selection1["Eccentric Duration [ms] "].mean())
     ecc_peak_velocity = round(df_selection["Eccentric Peak Velocity [m/s] "].mean(),2)
+    ecc_peak_velocity_team_avg = round(df_selection1["Eccentric Peak Velocity [m/s] "].mean(),2)
     cmj_depth = int(df_selection["Countermovement Depth [cm] "].mean())
+    cmj_depth_team_avg = int(df_selection1["Countermovement Depth [cm] "].mean())
     ecc_decl_rfd = int(df_selection["Eccentric Deceleration RFD [N/s] "].mean())
+    ecc_decl_rfd_team_avg = int(df_selection1["Eccentric Deceleration RFD [N/s] "].mean())
     ecc_decl_imp = int(df_selection["Eccentric Deceleration Impulse [N s] "].mean())
+    ecc_decl_imp_team_avg = int(df_selection1["Eccentric Deceleration Impulse [N s] "].mean())
     ecc_peak_force = int(df_selection["Eccentric Peak Force [N] "].mean())
+    ecc_peak_force_team_avg = int(df_selection1["Eccentric Peak Force [N] "].mean())
     braking_duration = round(df_selection["Braking Phase Duration [s] "].mean(),2)
-
-  
-
+    braking_duration_team_avg = round(df_selection1["Braking Phase Duration [s] "].mean(),2)
 
     #Most recent KPI's
     ecc_duration_recent = int(df_selection[df_selection["Date"]==df_selection["Date"].max()]["Eccentric Duration [ms] "].mean())
@@ -174,6 +181,11 @@ if st.sidebar.checkbox('Log in'):
               annotation_position="bottom right",
               annotation_font_size=10,
               annotation_font_color="black")
+    #adding Team average line
+    fig_ecc_duration.add_hline(y=eccentric_duration_team_avg,line_dash="dot", line_color="red", annotation_text="Team Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="red")
 
     fig_ecc_duration.update_layout(
         xaxis=dict(tickmode="linear"),
@@ -200,6 +212,11 @@ if st.sidebar.checkbox('Log in'):
               annotation_position="bottom right",
               annotation_font_size=10,
               annotation_font_color="black")
+    #adding Team average line
+    fig_ecc_peak_vel.add_hline(y=ecc_peak_velocity_team_avg,line_dash="dot", line_color="red", annotation_text="Team Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="red")
 
     fig_ecc_peak_vel.update_layout(
         xaxis=dict(tickmode="linear"),
@@ -225,6 +242,11 @@ if st.sidebar.checkbox('Log in'):
               annotation_position="bottom right",
               annotation_font_size=10,
               annotation_font_color="black")
+    #adding team avg line
+    fig_cmj_depth.add_hline(y=cmj_depth_team_avg,line_dash="dot", line_color="red", annotation_text="Team Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="red")
 
     fig_cmj_depth.update_layout(
         xaxis=dict(tickmode="linear"),
@@ -250,6 +272,11 @@ if st.sidebar.checkbox('Log in'):
               annotation_position="bottom right",
               annotation_font_size=10,
               annotation_font_color="black")
+    #adding team Average line
+    fig_ecc_decl_rfd.add_hline(y=ecc_decl_rfd_team_avg,line_dash="dot", line_color="red", annotation_text="Team Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="red")
 
     fig_ecc_decl_rfd.update_layout(
         xaxis=dict(tickmode="linear"),
@@ -275,6 +302,11 @@ if st.sidebar.checkbox('Log in'):
               annotation_position="bottom right",
               annotation_font_size=10,
               annotation_font_color="black")
+    #adding team Average line
+    fig_ecc_decl_imp.add_hline(y=ecc_decl_imp_team_avg,line_dash="dot", line_color="red", annotation_text="Team Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="red")
 
     fig_ecc_decl_imp.update_layout(
         xaxis=dict(tickmode="linear"),
@@ -290,7 +322,7 @@ if st.sidebar.checkbox('Log in'):
         ecc_peak_force_name,
         ecc_peak_force_name.index,
         y="Eccentric Peak Force [N] ",
-        title="<b>Eccetnric Peak Force</b>",
+        title="<b>Eccentric Peak Force</b>",
         color_discrete_sequence=["#3679ff"] * len(ecc_peak_force_name),
         template="plotly_white",
         markers=True
@@ -300,6 +332,11 @@ if st.sidebar.checkbox('Log in'):
               annotation_position="bottom right",
               annotation_font_size=10,
               annotation_font_color="black")
+    #adding team Average line
+    fig_ecc_peak_force.add_hline(y=ecc_peak_force_team_avg,line_dash="dot", line_color="red", annotation_text="Team Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="red")
 
     fig_ecc_peak_force.update_layout(
         xaxis=dict(tickmode="linear"),
@@ -325,6 +362,11 @@ if st.sidebar.checkbox('Log in'):
               annotation_position="bottom right",
               annotation_font_size=10,
               annotation_font_color="black")
+    #adding team avg line
+    fig_braking_duration.add_hline(y=braking_duration_team_avg,line_dash="dot", line_color="red", annotation_text="Team Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="red")
 
     fig_braking_duration.update_layout(
         xaxis=dict(tickmode="linear"),
@@ -338,10 +380,15 @@ if st.sidebar.checkbox('Log in'):
 
     # TOP KPI's Performance
     peak_power = int(df_selection["Peak Power / BM [W/kg] "].mean())
+    peak_power_team_avg = int(df_selection1["Peak Power / BM [W/kg] "].mean())
     jump_height = int(df_selection["Jump Height (Flight Time) in Inches [in] "].mean())
+    jump_height_team_avg = int(df_selection1["Jump Height (Flight Time) in Inches [in] "].mean())
     RSI_mod = round(df_selection["RSI-modified [m/s] "].mean(),2)
+    RSI_mod_team_avg = round(df_selection1["RSI-modified [m/s] "].mean(),2)
     conc_impulse =int(df_selection["Concentric Impulse [N s] "].mean())
+    conc_impulse_team_avg =int(df_selection1["Concentric Impulse [N s] "].mean())
     ecc_impulse = int(df_selection["Eccentric Braking Impulse [N s] "].mean())
+    ecc_impulse_team_avg = int(df_selection1["Eccentric Braking Impulse [N s] "].mean())
 
     #Most recent KPI's Performance
     jump_height_recent = int(df_selection[df_selection["Date"]==df_selection["Date"].max()]["Jump Height (Flight Time) in Inches [in] "].mean())
@@ -419,6 +466,11 @@ if st.sidebar.checkbox('Log in'):
               annotation_position="bottom right",
               annotation_font_size=10,
               annotation_font_color="black")
+    #adding team Average line
+    fig_jump_height.add_hline(y=jump_height_team_avg,line_dash="dot", line_color="red", annotation_text="Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="red")
 
     fig_jump_height.update_layout(
         xaxis=dict(tickmode="linear"),
@@ -443,6 +495,11 @@ if st.sidebar.checkbox('Log in'):
               annotation_position="bottom right",
               annotation_font_size=10,
               annotation_font_color="black")
+    #adding team Average line
+    fig_peak_power.add_hline(y=peak_power_team_avg,line_dash="dot", line_color="red", annotation_text="Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="red")
     
     fig_peak_power.update_layout(
         xaxis=dict(tickmode="linear"),
@@ -467,6 +524,11 @@ if st.sidebar.checkbox('Log in'):
               annotation_position="bottom right",
               annotation_font_size=10,
               annotation_font_color="black")
+    #adding team Average line
+    fig_RSI_mod.add_hline(y=RSI_mod_team_avg,line_dash="dot", line_color="red", annotation_text="Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="red")
 
     fig_RSI_mod.update_layout(
         xaxis=dict(tickmode="linear"),
@@ -491,6 +553,11 @@ if st.sidebar.checkbox('Log in'):
               annotation_position="bottom right",
               annotation_font_size=10,
               annotation_font_color="black")
+    #adding team Average line
+    fig_conc_impulse.add_hline(y=conc_impulse_team_avg,line_dash="dot", line_color="red", annotation_text="Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="red")
 
     fig_conc_impulse.update_layout(
         xaxis=dict(tickmode="linear"),
@@ -515,7 +582,12 @@ if st.sidebar.checkbox('Log in'):
               annotation_position="bottom right",
               annotation_font_size=10,
               annotation_font_color="black")
-
+    #adding Average line
+    fig_ecc_impulse.add_hline(y=ecc_impulse_team_avg,line_dash="dot", line_color="red", annotation_text="Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="red")
+              
     fig_ecc_impulse.update_layout(
         xaxis=dict(tickmode="linear"),
         plot_bgcolor="rgba(0,0,0,0)",
