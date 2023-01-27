@@ -467,7 +467,7 @@ if st.sidebar.checkbox('Log in'):
               annotation_font_size=10,
               annotation_font_color="black")
     #adding team Average line
-    fig_jump_height.add_hline(y=jump_height_team_avg,line_dash="dot", line_color="red", annotation_text="Average", 
+    fig_jump_height.add_hline(y=jump_height_team_avg,line_dash="dot", line_color="red", annotation_text="Team Average", 
               annotation_position="bottom right",
               annotation_font_size=10,
               annotation_font_color="red")
@@ -496,7 +496,7 @@ if st.sidebar.checkbox('Log in'):
               annotation_font_size=10,
               annotation_font_color="black")
     #adding team Average line
-    fig_peak_power.add_hline(y=peak_power_team_avg,line_dash="dot", line_color="red", annotation_text="Average", 
+    fig_peak_power.add_hline(y=peak_power_team_avg,line_dash="dot", line_color="red", annotation_text="Team Average", 
               annotation_position="bottom right",
               annotation_font_size=10,
               annotation_font_color="red")
@@ -525,7 +525,7 @@ if st.sidebar.checkbox('Log in'):
               annotation_font_size=10,
               annotation_font_color="black")
     #adding team Average line
-    fig_RSI_mod.add_hline(y=RSI_mod_team_avg,line_dash="dot", line_color="red", annotation_text="Average", 
+    fig_RSI_mod.add_hline(y=RSI_mod_team_avg,line_dash="dot", line_color="red", annotation_text="Team Average", 
               annotation_position="bottom right",
               annotation_font_size=10,
               annotation_font_color="red")
@@ -554,7 +554,7 @@ if st.sidebar.checkbox('Log in'):
               annotation_font_size=10,
               annotation_font_color="black")
     #adding team Average line
-    fig_conc_impulse.add_hline(y=conc_impulse_team_avg,line_dash="dot", line_color="red", annotation_text="Average", 
+    fig_conc_impulse.add_hline(y=conc_impulse_team_avg,line_dash="dot", line_color="red", annotation_text="Team Average", 
               annotation_position="bottom right",
               annotation_font_size=10,
               annotation_font_color="red")
@@ -583,7 +583,7 @@ if st.sidebar.checkbox('Log in'):
               annotation_font_size=10,
               annotation_font_color="black")
     #adding Average line
-    fig_ecc_impulse.add_hline(y=ecc_impulse_team_avg,line_dash="dot", line_color="red", annotation_text="Average", 
+    fig_ecc_impulse.add_hline(y=ecc_impulse_team_avg,line_dash="dot", line_color="red", annotation_text="Team Average", 
               annotation_position="bottom right",
               annotation_font_size=10,
               annotation_font_color="red")
