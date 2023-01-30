@@ -92,6 +92,7 @@ if st.sidebar.checkbox('Log in'):
     ecc_decl_imp_recent = int(df_selection[df_selection["Date"]==df_selection["Date"].max()]["Eccentric Deceleration Impulse [N s] "].mean())
     ecc_peak_force_recent = int(df_selection[df_selection["Date"]==df_selection["Date"].max()]["Eccentric Peak Force [N] "].mean())
     braking_duration_recent = round(df_selection[df_selection["Date"]==df_selection["Date"].max()]["Braking Phase Duration [s] "].mean(),2)
+    
 
     #calculations for percentages readiness
     ecc_duration_percentage = round(((ecc_duration_recent/eccentric_duration)*100)-100)
@@ -389,6 +390,8 @@ if st.sidebar.checkbox('Log in'):
     conc_impulse_team_avg =int(df_selection1["Concentric Impulse [N s] "].mean())
     ecc_impulse = int(df_selection["Eccentric Braking Impulse [N s] "].mean())
     ecc_impulse_team_avg = int(df_selection1["Eccentric Braking Impulse [N s] "].mean())
+    conc_peak_force = int(df_selection["Concentric Peak Force [N] "].mean())
+    conc_peak_force_team_avg = int(df_selection1["Concentric Peak Force [N] "].mean())
 
     #Most recent KPI's Performance
     jump_height_recent = int(df_selection[df_selection["Date"]==df_selection["Date"].max()]["Jump Height (Flight Time) in Inches [in] "].mean())
@@ -396,6 +399,7 @@ if st.sidebar.checkbox('Log in'):
     RSI_mod_recent = int(df_selection[df_selection["Date"]==df_selection["Date"].max()]["RSI-modified [m/s] "].mean())
     conc_impulse_recent = int(df_selection[df_selection["Date"]==df_selection["Date"].max()]["Concentric Impulse [N s] "].mean())
     ecc_impulse_recent = int(df_selection[df_selection["Date"]==df_selection["Date"].max()]["Eccentric Braking Impulse [N s] "].mean())
+    conc_peak_force_recent = int(df_selection[df_selection["Date"]==df_selection["Date"].max()]["Concentric Peak Force [N] "].mean())
 
     #calculations for percentages Performance
     jump_height_percentage = round(((jump_height_recent/jump_height)*100)-100)
@@ -403,6 +407,7 @@ if st.sidebar.checkbox('Log in'):
     RSI_mod_percentage = round(((RSI_mod_recent/RSI_mod)*100)-100)
     conc_impulse_percentage = round(((conc_impulse_recent/conc_impulse)*100)-100)
     ecc_impulse_percentage = round(((ecc_impulse_recent/ecc_impulse)*100)-100)
+    conc_peak_force_percentage = round(((conc_peak_force_recent/conc_peak_force)*100)-100)
 
     #functions for emojis Performance
 
@@ -446,7 +451,13 @@ if st.sidebar.checkbox('Log in'):
       else:
         return str(ecc_impulse_percentage) + " % " + ":thumbsup:"
 
-
+    def conc_peak_force_emoji(conc_peak_force_percentage): 
+      if conc_peak_force_percentage < -5:
+        return str(conc_peak_force_percentage) + " % " + ":exclamation:"
+      elif conc_peak_force_percentage >5:
+        return str(conc_peak_force_percentage) + " % " + ":fire:"
+      else:
+        return str(conc_peak_force_percentage) + " % " + ":thumbsup:" 
 
     #Graphs Performance KPI's
 
@@ -596,6 +607,35 @@ if st.sidebar.checkbox('Log in'):
     fig_ecc_impulse.update_traces(marker_size=11)
     fig_ecc_impulse.update_xaxes(rangebreaks=[dict(values=missingDates)]) #remove empty dates
 
+    conc_peak_force_by_name = df_selection.groupby(by=["Date"]).mean()[["Concentric Peak Force [N] "]]
+    fig_conc_peak_force = px.line(
+        conc_peak_force_by_name,
+        x=conc_peak_force_by_name.index,
+        y="Concentric Peak Force [N] ",
+        title="<b>Concentric Peak Force</b>",
+        color_discrete_sequence=["#3679ff"] * len(conc_peak_force_by_name),
+        template="plotly_white",
+        markers=True
+    )
+    #adding Average line
+    fig_conc_peak_force.add_hline(y=conc_peak_force,line_dash="dash", line_color="black", annotation_text="Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="black")
+    #adding Average line
+    fig_conc_peak_force.add_hline(y=conc_peak_force_team_avg,line_dash="dot", line_color="red", annotation_text="Team Average", 
+              annotation_position="bottom right",
+              annotation_font_size=10,
+              annotation_font_color="red")
+              
+    fig_conc_peak_force.update_layout(
+        xaxis=dict(tickmode="linear"),
+        plot_bgcolor="rgba(0,0,0,0)",
+        yaxis=(dict(showgrid=False)),
+    )
+    fig_conc_peak_force.update_traces(marker_size=11)
+    fig_conc_peak_force.update_xaxes(rangebreaks=[dict(values=missingDates)]) #remove empty dates
+
 
 #Header Readiness
     def readiness():
@@ -729,9 +769,9 @@ if st.sidebar.checkbox('Log in'):
             st.markdown("##### % Difference:")
             st.write(RSI_mod_emoji(cmj_depth_percentage))
         
-        middle_right_column2,right_column2= st.columns(2)
-        with middle_right_column2:
-            st.markdown("### Concentric Impulse")
+        left_column2,middle_column2,right_column2= st.columns(3)
+        with left_column2:
+            st.markdown("### Conc Impulse")
             st.markdown("####")
             st.markdown("##### Average:")
             st.write(f" {conc_impulse:,}")
@@ -739,8 +779,8 @@ if st.sidebar.checkbox('Log in'):
             st.write(f" {conc_impulse_recent:,}")
             st.markdown("##### % Difference:")
             st.write(conc_impulse_emoji(conc_impulse_percentage))
-        with right_column2:
-            st.markdown("### Eccentric Impulse")
+        with middle_column2:
+            st.markdown("### Ecc Impulse")
             st.markdown("####")
             st.markdown("##### Average:")
             st.write(f" {ecc_impulse:,}")
@@ -748,6 +788,15 @@ if st.sidebar.checkbox('Log in'):
             st.write(f" {ecc_impulse_recent:,}")
             st.markdown("##### % Difference:")
             st.write(ecc_impulse_emoji(ecc_impulse_percentage))
+        with right_column2:
+            st.markdown("### Conc Peak Force")
+            st.markdown("####")
+            st.markdown("##### Average:")
+            st.write(f" {conc_peak_force:,}")
+            st.markdown("##### Most Recent:")
+            st.write(f" {conc_peak_force_recent:,}")
+            st.markdown("##### % Difference:")
+            st.write(conc_peak_force_emoji(conc_peak_force_percentage))
 
         st.markdown("""---""")
 
@@ -756,6 +805,7 @@ if st.sidebar.checkbox('Log in'):
         st.plotly_chart(fig_RSI_mod, use_container_width=True)
         st.plotly_chart(fig_conc_impulse, use_container_width=True)
         st.plotly_chart(fig_ecc_impulse, use_container_width=True)
+        st.plotly_chart(fig_conc_peak_force, use_container_width=True)
 
         st.caption(":thumbsup: = between -5 to 5% diff")
         st.caption(":fire: = more than 5% improvement")
