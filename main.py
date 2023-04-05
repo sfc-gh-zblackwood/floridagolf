@@ -4,7 +4,8 @@ import plotly_express as px
 import streamlit as st
 import time
 from PIL import Image
-
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 
 image = Image.open('florida.png')
@@ -767,7 +768,9 @@ if st.sidebar.checkbox('Log in'):
         st.markdown("#####")
         st.markdown('#')
         st.subheader("Compare data between athletes")
-        
+        st.write("Select the athletes that you want to compare in the navigation bar")
+        st.markdown('###')
+
         df_nonameordate = df_selection.drop(['Date','Name'], axis=1)
         dfdateorname=df_selection.drop(['Peak Power / BM [W/kg] ','RSI-modified [m/s] ','Concentric Impulse [N s] ','Eccentric Braking Impulse [N s] ',
                                   'Eccentric Duration [ms] ','Countermovement Depth [cm] ','Eccentric Peak Velocity [m/s] ',
@@ -778,9 +781,8 @@ if st.sidebar.checkbox('Log in'):
         
         col1,col2 = st.columns(2)
         y_axis_val = col1.selectbox('Select the Metric', options=df_nonameordate.columns)
-        st.write("Select the athletes that you want to compare in the navigation bar")
 
-        plot = px.scatter(df_selection, x=df_selection['Date'], y=y_axis_val, color=df_selection['Name'], text=df_selection['Name'])
+        plot = px.line(df_selection, x=df_selection['Date'], y=y_axis_val, color=df_selection['Name'], text=y_axis_val)
         plot.update_layout(
         xaxis=dict(tickmode="linear"),
         )
@@ -790,7 +792,9 @@ if st.sidebar.checkbox('Log in'):
         
         st.markdown("""---""")
         st.subheader('Comparasion between two metrics')
-        st.markdown('##')
+        st.write("Select only a few athletes in the navigation bar for best visual")
+        st.markdown('###')
+
         
         df_perfandread = df_nonameordate.drop(['Takeoff Peak Force [N] (Asym) (%)','Peak Landing Force [N] (Asym) (%)',
                                   'Eccentric Braking Impulse [N s] (Asym) (%)','Eccentric Deceleration RFD [N/s] (Asym) (%)'], axis=1)
@@ -803,7 +807,7 @@ if st.sidebar.checkbox('Log in'):
           select2 = st.selectbox('Select the Y-axis', options=sb_options, index=1)
         
         #scatter plot
-        plot3 = px.scatter(df_selection, x=select1, y=select2, title= select2 + ' VS ' + select1, text='Date', color='Date')
+        plot3 = px.scatter(df_selection, x=select1, y=select2, title= select2 + ' VS ' + select1, text='Date', color='Name')
         plot3.update_traces(marker_size=11, textposition='top center')
 
         st.plotly_chart(plot3, use_container_width=True)
@@ -811,7 +815,8 @@ if st.sidebar.checkbox('Log in'):
     def assym():
         st.header('Asymmetries')
         st.write("Select only 1 athlete in the navigation bar for best visual")
-        
+        st.markdown('###')
+
         dfdateorname=df_selection.drop(['Peak Power / BM [W/kg] ','RSI-modified [m/s] ','Concentric Impulse [N s] ','Eccentric Braking Impulse [N s] ',
                                   'Eccentric Duration [ms] ','Countermovement Depth [cm] ','Eccentric Peak Velocity [m/s] ',
                                   'Takeoff Peak Force [N] (Asym) (%)','Peak Landing Force [N] (Asym) (%)',
@@ -853,8 +858,9 @@ if st.sidebar.checkbox('Log in'):
         plot_assym = px.bar(df_selection, x=select_options, y=dateorname, text=select_options, color=dateorname,
                             labels={
                             "X": "Asymmetry",
-                            },template="plotly_dark")
+                            },template="plotly_white")
         plot_assym.update_yaxes(rangebreaks=[dict(values=missingDates)]) #remove empty dates
+        plot_assym.update_traces(textposition='outside', textfont_size=18)
         
         st.plotly_chart(plot_assym, use_container_width=True)
 
