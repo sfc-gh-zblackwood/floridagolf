@@ -4,8 +4,6 @@ import plotly_express as px
 import streamlit as st
 import time
 from PIL import Image
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 
 
 image = Image.open('florida.png')
@@ -766,7 +764,6 @@ if st.sidebar.checkbox('Log in'):
         
         st.markdown("<h1 style='text-align: center; color: #00000;'>Interactice Graphs</h1>", unsafe_allow_html=True)
         st.markdown("#####")
-        st.markdown('#')
         st.subheader("Compare data between athletes")
         st.write("Select the athletes that you want to compare in the navigation bar")
         st.markdown('###')
@@ -813,7 +810,8 @@ if st.sidebar.checkbox('Log in'):
         st.plotly_chart(plot3, use_container_width=True)
 
     def assym():
-        st.header('Asymmetries')
+        st.markdown("<h1 style='text-align: center; color: #00000;'>Asymmetries</h1>", unsafe_allow_html=True)
+        st.markdown("#####")
         st.write("Select only 1 athlete in the navigation bar for best visual")
         st.markdown('###')
 
