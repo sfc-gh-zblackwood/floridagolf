@@ -27,6 +27,7 @@ if st.sidebar.checkbox('Log in'):
     #remove columns and change date
     df_updated=df.drop(['ExternalId','Test Type','Time','BW [KG]','Reps','Tags','Additional Load [lb]'], axis=1)
     df_updated['Date'] = pd.to_datetime(df['Date']).dt.date
+    df_updated["Name"].astype(str)
    
     #sidebar
 
