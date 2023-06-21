@@ -1,3 +1,4 @@
+
 import pandas as pd
 import plotly_express as px
 import streamlit as st
@@ -1001,6 +1002,8 @@ if st.sidebar.checkbox('Log in'):
 
       sb_options = list(df_perfandread.columns)
       sb_options.remove('Name')
+
+      st.write("For best visual select only one date")
 
       colselect1,colselect2 = st.columns(2)
       with colselect1:
