@@ -258,7 +258,7 @@ if st.sidebar.checkbox('Log in'):
     fig_cmj_depth.update_xaxes(rangebreaks=[dict(values=missingDates)])  #remove empty dates
   
     #Eccentric Decl RFD graph
-    ecc_decl_rfd_name = df_selection.groupby(by=["Date"]).mean()[["Eccentric Deceleration RFD [N/s] "]]
+    ecc_decl_rfd_name = df_selection.groupby(by=["Date"]).mean(numeric_only=True)[["Eccentric Deceleration RFD [N/s] "]]
     fig_ecc_decl_rfd = px.line(
         ecc_decl_rfd_name,
         ecc_decl_rfd_name.index,
