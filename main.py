@@ -198,7 +198,7 @@ if st.sidebar.checkbox('Log in'):
     fig_ecc_duration.update_xaxes(rangebreaks=[dict(values=missingDates)])  #remove empty dates
     
     #ecc peak vel graph
-    ecc_peak_vel_by_name = df_selection.groupby(by=["Date"]).mean()[["Eccentric Peak Velocity [m/s] "]]
+    ecc_peak_vel_by_name = df_selection.groupby(by=["Date"]).mean(numeric_only=True)[["Eccentric Peak Velocity [m/s] "]]
     fig_ecc_peak_vel = px.line(
         ecc_peak_vel_by_name,
         ecc_peak_vel_by_name.index,
@@ -228,7 +228,7 @@ if st.sidebar.checkbox('Log in'):
     fig_ecc_peak_vel.update_xaxes(rangebreaks=[dict(values=missingDates)]) #remove empty dates
 
     #cmj depth graph
-    cmj_depth_by_name = df_selection.groupby(by=["Date"]).mean()[["Countermovement Depth [cm] "]]
+    cmj_depth_by_name = df_selection.groupby(by=["Date"]).mean(numeric_only=True)[["Countermovement Depth [cm] "]]
     fig_cmj_depth = px.line(
         cmj_depth_by_name,
         cmj_depth_by_name.index,
@@ -288,7 +288,7 @@ if st.sidebar.checkbox('Log in'):
     fig_ecc_decl_rfd.update_xaxes(rangebreaks=[dict(values=missingDates)])  #remove empty dates
 
     #Ecc Decl Impulse graph
-    ecc_decl_imp_name = df_selection.groupby(by=["Date"]).mean()[["Eccentric Deceleration Impulse [N s] "]]
+    ecc_decl_imp_name = df_selection.groupby(by=["Date"]).mean(numeric_only=True)[["Eccentric Deceleration Impulse [N s] "]]
     fig_ecc_decl_imp = px.line(
         ecc_decl_imp_name,
         ecc_decl_imp_name.index,
@@ -318,7 +318,7 @@ if st.sidebar.checkbox('Log in'):
     fig_ecc_decl_imp.update_xaxes(rangebreaks=[dict(values=missingDates)]) #remove empty dates
 
     #Ecc peak force graph graph
-    ecc_peak_force_name = df_selection.groupby(by=["Date"]).mean()[["Eccentric Peak Force [N] "]]
+    ecc_peak_force_name = df_selection.groupby(by=["Date"]).mean(numeric_only=True)[["Eccentric Peak Force [N] "]]
     fig_ecc_peak_force = px.line(
         ecc_peak_force_name,
         ecc_peak_force_name.index,
@@ -348,7 +348,7 @@ if st.sidebar.checkbox('Log in'):
     fig_ecc_peak_force.update_xaxes(rangebreaks=[dict(values=missingDates)])  #remove empty dates
 
     #Braking Duration graph
-    braking_duration_name = df_selection.groupby(by=["Date"]).mean()[["Braking Phase Duration [s] "]]
+    braking_duration_name = df_selection.groupby(by=["Date"]).mean(numeric_only=True)[["Braking Phase Duration [s] "]]
     fig_braking_duration = px.line(
         braking_duration_name,
         braking_duration_name.index,
