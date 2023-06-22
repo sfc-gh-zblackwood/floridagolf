@@ -166,7 +166,7 @@ if st.sidebar.checkbox('Log in'):
     missingDates=[d for d in pd.date_range(min(df.Date), max(df.Date), freq='D') if d not in presentDates]  
 
     #ecc duration graph
-    ecc_duration_by_name = df_selection.groupby(by=["Date"]).mean()[["Eccentric Duration [ms] "]]
+    ecc_duration_by_name = df_selection.drop(columns=["Name"]).groupby(by=["Date"]).mean()[["Eccentric Duration [ms] "]]
     fig_ecc_duration = px.line(
         ecc_duration_by_name,
         x=ecc_duration_by_name.index,
