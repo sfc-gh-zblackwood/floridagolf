@@ -167,7 +167,7 @@ if st.sidebar.checkbox('Log in'):
 
     #ecc duration graph
     st.write(df_selection)
-    ecc_duration_by_name = df_selection.drop(columns=["Name"]).groupby(by=["Date"]).mean()[["Eccentric Duration [ms] "]]
+    ecc_duration_by_name = df_selection.groupby(by=["Date"]).mean(numeric_only=True)[["Eccentric Duration [ms] "]]
     fig_ecc_duration = px.line(
         ecc_duration_by_name,
         x=ecc_duration_by_name.index,
